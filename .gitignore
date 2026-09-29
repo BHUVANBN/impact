@@ -1,0 +1,33 @@
+# Environment & Secrets
+.env
+*.env
+
+# Python Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Byte-compiled / Optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest & Testing Caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local Data & SQLite Databases
+data/*.db
+data/uploads/*
+!data/uploads/.gitkeep
+
+# IDE / OS specific
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Scratch & Temporary Logs
+*.log

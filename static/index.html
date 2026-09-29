@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en" data-theme="tokyo-night">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>impact</title>
+  <meta name="description" content="Provenance-first evidence and media analysis platform.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="omarchy-container">
+    <!-- Header & Brand Section -->
+    <header class="omarchy-header header-centered">
+      <div class="brand-title-group centered">
+        <pre class="impact-ascii-logo"> ▄█     ▄▄▄▄███▄▄▄▄      ▄███████▄    ▄████████  ▄████████     ███     
+███   ▄██▀▀▀███▀▀▀██▄   ███    ███   ███    ███ ███    ███ ▀█████████▄ 
+███▌  ███   ███   ███   ███    ███   ███    ███ ███    █▀     ▀███▀▀██ 
+███▌  ███   ███   ███   ███    ███   ███    ███ ███            ███   ▀ 
+███▌  ███   ███   ███ ▀█████████▀  ▀███████████ ███            ███     
+███   ███   ███   ███   ███          ███    ███ ███    █▄      ███     
+███   ███   ███   ███   ███          ███    ███ ███    ███     ███     
+█▀     ▀█   ███   █▀   ▄████▀        ███    █▀  ████████▀     ▄████▀   </pre>
+        <div class="brand-subtitle">Provenance-first media evidence and analysis platform.</div>
+      </div>
+
+      <!-- Live Theme Switcher -->
+      <div class="theme-switcher-wrapper">
+        <div class="theme-switcher-label">
+          <span>Theme</span>
+          <kbd>T</kbd>
+        </div>
+        <select id="themeSelect" class="theme-select" onchange="setTheme(this.value)">
+          <option value="tokyo-night">Tokyo Night</option>
+          <option value="catppuccin">Catppuccin</option>
+          <option value="catppuccin-latte">Catppuccin Latte</option>
+          <option value="everforest">Everforest</option>
+          <option value="gruvbox">Gruvbox</option>
+          <option value="nord">Nord</option>
+          <option value="osaka-jade">Osaka Jade</option>
+          <option value="retro-82">Retro 82</option>
+          <option value="ristretto">Ristretto</option>
+          <option value="rose-pine">Rosé Pine</option>
+          <option value="solitude">Solitude</option>
+          <option value="vantablack">Vantablack</option>
+          <option value="white">White</option>
+          <option value="flexoki-light">Flexoki Light</option>
+          <option value="lumon">Lumon</option>
+          <option value="miasma">Miasma</option>
+          <option value="last-horizon">Last Horizon</option>
+          <option value="hackerman">Hackerman</option>
+          <option value="kanagawa">Kanagawa</option>
+          <option value="ethereal">Ethereal</option>
+          <option value="lupine">Lupine</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- Workspace & Project Management Card -->
+    <section class="panel-card">
+      <div class="panel-title">Project & Ingestion Workspace</div>
+      <div class="control-row">
+        <!-- Project Switcher & Creation -->
+        <div class="input-group">
+          <input id="n" type="text" placeholder="New project name..." onkeydown="if(event.key==='Enter')mk()">
+          <button class="btn-primary" onclick="mk()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Create project
+          </button>
+        </div>
+
+        <div class="input-group">
+          <label style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--t-text-muted); white-space: nowrap;">Active Project:</label>
+          <select id="p" onchange="load()"></select>
+        </div>
+      </div>
+
+      <!-- File Upload Row -->
+      <div class="control-row" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--t-border-subtle);">
+        <label for="f" class="file-upload-label">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          Choose Images
+          <span id="fileCountBadge" class="file-count-badge" style="display:none;">0 files selected</span>
+        </label>
+        <input id="f" type="file" multiple accept="image/*" onchange="updateFileBadge()">
+        <button class="btn-primary" onclick="up()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          Upload
+        </button>
+      </div>
+    </section>
+
+    <!-- Query & Intelligence Actions -->
+    <section class="panel-card">
+      <div class="panel-title">Query & Analysis Pipeline</div>
+      <div class="actions-toolbar">
+        <div class="search-box">
+          <input id="q" type="text" placeholder="Search evidence, tags, or locations..." onkeydown="if(event.key==='Enter')se()">
+          <button onclick="se()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            Search
+          </button>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn-accent" onclick="as()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            Ask: what changed?
+          </button>
+          <button onclick="rp()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            Report
+          </button>
+          <button onclick="cp()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            Campaign
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Terminal Window Console Output (`#o`) -->
+    <section class="terminal-window">
+      <div class="terminal-header">
+        <div class="terminal-dots">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+        </div>
+        <div class="terminal-title">bash — impact-console</div>
+        <div class="terminal-actions">
+          <button class="btn-mini" onclick="copyOutput()">Copy</button>
+          <button class="btn-mini" onclick="clearOutput()">Clear</button>
+        </div>
+      </div>
+      <pre id="o"></pre>
+    </section>
+
+    <!-- Evidence Media Grid (`#g`) -->
+    <section>
+      <div class="gallery-section-header">
+        <div class="gallery-section-title">
+          <span>Project Evidence & Media</span>
+          <span id="galleryCount" class="gallery-count-badge">0 items</span>
+        </div>
+      </div>
+      <div id="g"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="omarchy-footer">
+      <div>Impact Platform &copy; 2026. Provenance-first.</div>
+    </footer>
+  </div>
+
+  <script>
+    const J = (u, o) => fetch(u, o).then(r => r.json());
+    const P = () => p.value;
+    const out = x => {
+      const outputElem = document.getElementById('o');
+      outputElem.textContent = typeof x === "string" ? x : JSON.stringify(x, null, 2);
+    };
+
+    function updateFileBadge() {
+      const fileBadge = document.getElementById('fileCountBadge');
+      if (f.files && f.files.length > 0) {
+        fileBadge.textContent = `${f.files.length} file${f.files.length > 1 ? 's' : ''} selected`;
+        fileBadge.style.display = 'inline-block';
+      } else {
+        fileBadge.style.display = 'none';
+      }
+    }
+
+    function clearOutput() {
+      document.getElementById('o').textContent = '';
+    }
+
+    function copyOutput() {
+      const text = document.getElementById('o').textContent;
+      if (text) {
+        navigator.clipboard.writeText(text).then(() => {
+          const title = document.querySelector('.terminal-title');
+          const oldTitle = title.textContent;
+          title.textContent = 'Copied to clipboard!';
+          setTimeout(() => title.textContent = oldTitle, 1500);
+        });
+      }
+    }
+
+    // Theme Manager
+    const themeList = [
+      "tokyo-night", "catppuccin", "catppuccin-latte", "everforest", "gruvbox", 
+      "nord", "osaka-jade", "retro-82", "ristretto", "rose-pine", "solitude", 
+      "vantablack", "white", "flexoki-light", "lumon", "miasma", "last-horizon", 
+      "hackerman", "kanagawa", "ethereal", "lupine"
+    ];
+
+    function setTheme(t) {
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem('site-theme', t);
+      const select = document.getElementById('themeSelect');
+      if (select && select.value !== t) select.value = t;
+    }
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('site-theme');
+      if (savedTheme && themeList.includes(savedTheme)) {
+        setTheme(savedTheme);
+      } else {
+        setTheme('tokyo-night');
+      }
+    }
+
+    // Key shortcut 'T' to cycle themes
+    document.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 't' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'tokyo-night';
+        const currentIndex = themeList.indexOf(currentTheme);
+        const nextTheme = themeList[(currentIndex + 1) % themeList.length];
+        setTheme(nextTheme);
+      }
+    });
+
+    async function lp() {
+      const projects = await J('/api/projects');
+      p.innerHTML = projects.map(x => `<option value="${x.id}">${x.name}</option>`).join('');
+      if (P()) load();
+    }
+
+    async function mk() {
+      if (!n.value.trim()) return;
+      await J('/api/projects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: n.value.trim() })
+      });
+      n.value = '';
+      await lp();
+    }
+
+    async function up() {
+      if (!P() || !f.files.length) return;
+      out("Uploading media...");
+      const sg = await J(`/api/projects/${P()}/uploads/sign`, { method: 'POST' });
+      for (const x of f.files) {
+        const d = new FormData();
+        if (sg.configured) {
+          for (const [k, v] of Object.entries(sg.params)) d.append(k, v);
+          d.append('api_key', sg.api_key);
+          d.append('signature', sg.signature);
+          d.append('file', x);
+          const r = await (await fetch(sg.upload_url, { method: 'POST', body: d })).json();
+          await fetch(`/api/projects/${P()}/uploads/complete`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(r)
+          });
+        } else {
+          d.append('file', x);
+          await fetch(`/api/projects/${P()}/media`, { method: 'POST', body: d });
+        }
+      }
+      f.value = '';
+      updateFileBadge();
+      load();
+    }
+
+    async function cp() {
+      if (!P()) return;
+      out("Fetching campaign data...");
+      out(await J(`/api/projects/${P()}/campaign`));
+    }
+
+    async function load() {
+      if (!P()) {
+        g.innerHTML = '';
+        document.getElementById('galleryCount').textContent = '0 items';
+        return;
+      }
+      const media = await J(`/api/projects/${P()}/media`);
+      document.getElementById('galleryCount').textContent = `${media.length} item${media.length === 1 ? '' : 's'}`;
+      
+      g.innerHTML = media.map(x => {
+        const isExifTime = x.captured_at_source === 'EXIF';
+        const isExifGps = x.location_source === 'EXIF';
+        const dateText = x.captured_at ? new Date(x.captured_at).toLocaleString() : 'UNKNOWN DATE';
+        
+        return `
+          <div class="media-card">
+            <div class="media-thumb-wrapper">
+              <img src="${x.safe_thumb_url}" alt="Evidence media item" loading="lazy">
+            </div>
+            <div class="media-meta-body">
+              <div class="meta-row">
+                <span class="meta-badge ${isExifTime ? 'exif' : 'unknown'}">
+                  ${isExifTime ? 'EXIF Time' : 'Time Unknown'}
+                </span>
+                <span style="font-size:0.75rem;">${dateText}</span>
+              </div>
+              <div class="meta-row" style="margin-top:0.2rem;">
+                <span class="meta-badge ${isExifGps ? 'gps' : 'unknown'}">
+                  GPS: ${x.location_source}
+                </span>
+                <span style="font-size:0.7rem; color:var(--t-text-muted); text-overflow:ellipsis; overflow:hidden; max-width:120px;">
+                  ID: ${x.id ? x.id.substring(0,8) : ''}
+                </span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      out(await J(`/api/projects/${P()}/timeline`));
+    }
+
+    async function se() {
+      if (!P()) return;
+      out(`Searching project for "${q.value}"...`);
+      out(await J(`/api/projects/${P()}/search?q=${encodeURIComponent(q.value)}`));
+    }
+
+    async function as() {
+      if (!P()) return;
+      out("Analyzing project timeline...");
+      out(await J(`/api/projects/${P()}/ask`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: 'what changed?' })
+      }));
+    }
+
+    async function rp() {
+      if (!P()) return;
+      out("Generating provenance report...");
+      const res = await J(`/api/projects/${P()}/report`, { method: 'POST' });
+      out(res.markdown);
+    }
+
+    initTheme();
+    lp();
+  </script>
+</body>
+</html>
